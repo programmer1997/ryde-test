@@ -5,4 +5,7 @@ db-setup:
 	mongosh --eval 'db.getSiblingDB("$(DB_NAME)").createCollection("$(COLLECTION_NAME)")'
 
 start-server:
-	cd cmd && go run main.go
+	 go mod download && cd cmd && go run main.go
+
+run-tests:
+	cd internal/router && go test
