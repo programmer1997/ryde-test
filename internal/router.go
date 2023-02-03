@@ -17,7 +17,7 @@ func CreateRouter(client *mongo.Client) *gin.Engine {
 
 	// Get user by id
 	r.GET("/v1/users/:id", func(c *gin.Context) {
-		getUsers(c, client)
+		getUserById(c, client)
 	})
 	// Create user
 	r.POST("/v1/users/create", func(c *gin.Context) {
@@ -35,7 +35,7 @@ func CreateRouter(client *mongo.Client) *gin.Engine {
 	return r
 }
 
-func getUsers(c *gin.Context, client *mongo.Client) {
+func getUserById(c *gin.Context, client *mongo.Client) {
 	id := c.Param("id")
 	if id == "" {
 		fmt.Print("id not found")
