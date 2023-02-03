@@ -2,24 +2,18 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/programmer1997/ryde-test/internal"
-	"go.mongodb.org/mongo-driver/mongo"
+	"github.com/programmer1997/ryde-test/internal/db"
+	router2 "github.com/programmer1997/ryde-test/internal/router"
 	"log"
 )
 
-var client *mongo.Client
 var router *gin.Engine
 
 func init() {
-	// Initialise DB
-	c, err := internal.InitDB()
-	if err != nil {
-		log.Fatal("DB Initialisation failed. Shutting down")
-	}
-	client = c
+	db := db.NewMongoDBClient()
 
 	// Initialise router
-	router = internal.CreateRouter(client)
+	router = router2.CreateRouter(db)
 }
 
 func main() {
