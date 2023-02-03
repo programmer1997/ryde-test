@@ -8,9 +8,8 @@ import (
 	"net/http"
 )
 
-func CreateRouter(client db.DBClient) *gin.Engine {
+func CreateRouter(client db.DBClient) {
 	r := gin.Default()
-
 	// Get user by id
 	r.GET("/v1/users/:id", func(c *gin.Context) {
 		getUserById(c, client)
@@ -24,11 +23,11 @@ func CreateRouter(client db.DBClient) *gin.Engine {
 	r.PUT("/v1/users/update/:id", func(c *gin.Context) {
 		updateUser(c, client)
 	})
+	// Delete user
 	r.DELETE("/v1/users/delete/:id", func(c *gin.Context) {
 		deleteUser(c, client)
 	})
 	r.Run()
-	return r
 }
 
 func getUserById(c *gin.Context, client db.DBClient) {

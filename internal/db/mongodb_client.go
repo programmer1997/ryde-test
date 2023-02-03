@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/programmer1997/ryde-test/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -45,7 +44,6 @@ func (db MongoDBClient) GetUserById(id string) (models.User, error) {
 		return user, err
 	}
 	res := collection.FindOne(context.TODO(), bson.M{"_id": objId})
-	fmt.Print(res.Err())
 	if res.Err() != nil {
 		return user, res.Err()
 	} else {

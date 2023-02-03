@@ -6,12 +6,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+// MockDBClient stores user information in-memory and is used for unit testing
 type MockDBClient struct {
 	mockDB map[primitive.ObjectID]models.User
 }
 
-func NewMockDBClient() MockDBClient {
-	return MockDBClient{mockDB: make(map[primitive.ObjectID]models.User)}
+func NewMockDBClient(db map[primitive.ObjectID]models.User) MockDBClient {
+	return MockDBClient{mockDB: db}
 }
 
 func (db MockDBClient) GetUserById(id string) (models.User, error) {
