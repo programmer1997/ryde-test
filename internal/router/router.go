@@ -1,11 +1,15 @@
 package router
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/programmer1997/ryde-test/internal/db"
 	"github.com/programmer1997/ryde-test/models"
 	"net/http"
+)
+
+const (
+	idMissingError   = "Request URL should contain Id"
+	successDeleteMsg = "Successfully Deleted"
 )
 
 func CreateRouter(client db.DBClient) {
@@ -33,11 +37,12 @@ func CreateRouter(client db.DBClient) {
 func getUserById(c *gin.Context, client db.DBClient) {
 	id := c.Param("id")
 	if id == "" {
-		fmt.Print("id not found")
+		c.JSON(http.StatusBadRequest, gin.H{"error": idMissingError})
+		return
 	}
 	res, err := client.GetUserById(id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, res)
@@ -59,6 +64,10 @@ func createUser(c *gin.Context, client db.DBClient) {
 
 func updateUser(c *gin.Context, client db.DBClient) {
 	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": idMissingError})
+		return
+	}
 	var user models.User
 	if err := c.BindJSON(&user); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -69,16 +78,19 @@ func updateUser(c *gin.Context, client db.DBClient) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(200, res)
+	c.JSON(http.StatusOK, res)
 }
 
 func deleteUser(c *gin.Context, client db.DBClient) {
 	id := c.Param("id")
+	if id == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": idMissingError})
+		return
+	}
 	err := client.DeleteUser(id)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(200, "Successfully deleted")
-
+	c.JSON(200, gin.H{"msg": successDeleteMsg})
 }
