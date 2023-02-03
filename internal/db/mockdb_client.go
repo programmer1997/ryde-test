@@ -8,11 +8,11 @@ import (
 
 // MockDBClient stores user information in-memory and is used for unit testing
 type MockDBClient struct {
-	mockDB map[primitive.ObjectID]models.User
+	MockDb map[primitive.ObjectID]models.User
 }
 
 func NewMockDBClient(db map[primitive.ObjectID]models.User) MockDBClient {
-	return MockDBClient{mockDB: db}
+	return MockDBClient{MockDb: db}
 }
 
 func (db MockDBClient) GetUserById(id string) (models.User, error) {
@@ -21,7 +21,7 @@ func (db MockDBClient) GetUserById(id string) (models.User, error) {
 	if err != nil {
 		return user, err
 	}
-	if v, ok := db.mockDB[objId]; ok {
+	if v, ok := db.MockDb[objId]; ok {
 		return v, nil
 	} else {
 		return user, errors.New("user does not exist")
@@ -32,8 +32,8 @@ func (db MockDBClient) DeleteUser(id string) error {
 	if err != nil {
 		return err
 	}
-	if _, ok := db.mockDB[objId]; ok {
-		delete(db.mockDB, objId)
+	if _, ok := db.MockDb[objId]; ok {
+		delete(db.MockDb, objId)
 		return nil
 	} else {
 		return errors.New("user does not exist")
@@ -42,7 +42,7 @@ func (db MockDBClient) DeleteUser(id string) error {
 func (db MockDBClient) CreateUser(user models.User) (models.User, error) {
 	objId := primitive.NewObjectID()
 	user.Id = objId
-	db.mockDB[objId] = user
+	db.MockDb[objId] = user
 	return user, nil
 }
 func (db MockDBClient) UpdateUser(id string, user models.User) (models.User, error) {
@@ -50,8 +50,8 @@ func (db MockDBClient) UpdateUser(id string, user models.User) (models.User, err
 	if err != nil {
 		return user, err
 	}
-	if _, ok := db.mockDB[objId]; ok {
-		db.mockDB[objId] = user
+	if _, ok := db.MockDb[objId]; ok {
+		db.MockDb[objId] = user
 		return user, nil
 	} else {
 		return user, errors.New("user does not exist")
