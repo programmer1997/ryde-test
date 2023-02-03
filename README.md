@@ -4,8 +4,6 @@
    The repo contains a simple CRUD server to get, add, update and delete users. It is 
    build using Golang with GIN for the API framework. The user data is stored in MongoDB
    
-   
-
 ## Getting Started
 1. Install [Go(v1.19.3)](https://go.dev/doc/install/) and [MongoDB(v6.0.4)](https://www.mongodb.com/docs/manual/installation/)
 2. Clone this repo in your system path
@@ -18,6 +16,11 @@
    make start-server
    ```
 ## Running Tests
+   The file "router_test.go" contains unit tests to test the API endpoints. 
+   Run this command to run all tests
+   ```
+      make run-tests
+   ```
 ## Advanced Requirements
 ### User Auth Strategy
     We could use a JWT based strategy where the client would send the JWT in the request
